@@ -2,7 +2,7 @@
 
 	Sub Main()
 		Console.WriteLine("Hello World")
-		Console.WriteLine("Unstaged change")
+		Console.WriteLine("First Feature")
 
 		Console.ReadKey()
 
