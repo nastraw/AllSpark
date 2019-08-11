@@ -1,15 +1,15 @@
 ﻿Public Class Room
-    Public Sub New(strRoomDesc As String)
-        Description = strRoomDesc
+	Public Sub New(name As String, strRoomDesc As String, locked As Boolean, exploreText As String, exits() As String)
+		Me.Name = name
+		Me.Description = strRoomDesc
+		Me.Locked = locked
+		Me.ExploreText = exploreText
+		Me.Exits = exits
+	End Sub
 
-    End Sub
-
-    Private Description As String = "room one"
-
-
-    Sub DisplayDescription()
-        Console.WriteLine(Description)
-
-    End Sub
-
+	Public ReadOnly Name As String
+	Public Description As String
+	Public Locked As Boolean
+	Public ExploreText As String
+	Public Exits() As String
 End Class

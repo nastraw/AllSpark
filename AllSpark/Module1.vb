@@ -2,143 +2,75 @@
 
 	Sub Main()
 
-        'This was to check that we could have more than one component for a room and it works
-        'Dim alphaRoom As RoomDraft = New RoomDraft("the study", 12)
-        'Console.WriteLine(alphaRoom.RoomText)
-        'Console.WriteLine(alphaRoom.RoomNum)
+		Dim currentRoom As Room
+		Dim input As Integer
 
-        Dim currentRoom As Integer = 0
-        Dim input As Integer
-        'Dim firstRoom As Room = New Room("first room")
-        'Dim secondRoom As Room = New Room("the library")
-        'Dim thirdRoom As Room = New Room("the billiards room")
-        'Dim interror As Integer
-        'Do While currentRoom >= 0
+		Dim strMasterRoom(3, 9) As String
+		Dim rooms(3) As Room
+		rooms(0) = New Room("The Study", "This is where procrastinating is done.", False, "You explore and find nothing of use.", New String() {1, 2})
+		rooms(1) = New Room("The Library", "Where wild books make their nest.", False, "You discovered the Wrench.", New String() {0, 2})
+		rooms(2) = New Room("The Billiards Room", "This has a pool table, not to be confused with a table inside of a pool.", False, "You explore and find a secret exit.", New String() {0, 1, 3})
+		rooms(3) = New Room("The Ballroom", "Sadly, not a ballpit.", False, "You reached the exit.", New String() {0, 2})
 
-        '    Console.WriteLine("what do you want to do: 0-move 1-inventory 2-explore")
-        '    input = Console.ReadLine
+		Dim strRoomMotion As String
+		Dim nextRoom As Integer
 
-        '    If input = 0 Then
-        '        Console.WriteLine("choose your path: 0-first room 1-library 2-billiards room")
+		currentRoom = rooms(0)
 
-        '        interror = currentRoom
-        '        currentRoom = Console.ReadLine
-        '        If currentRoom = 0 Then
-        '            firstRoom.DisplayDescription()
-        '        ElseIf currentRoom = 1 Then
-        '            secondRoom.DisplayDescription()
-        '        ElseIf currentRoom = 2 Then
-        '            thirdRoom.DisplayDescription()
-        '        ElseIf currentRoom < 0 Then
-        '            Exit Do
-        '        Else
-        '            Console.WriteLine("Invalid input")
-        '            currentRoom = interror
-        '        End If
-        '    ElseIf input = 1 Then
-        '        'inventory
-        '    Else
-        '        'explore
+		Do While currentRoom IsNot Nothing
 
-        '    End If
+			'introductions to the room
 
-        'Loop
+			Console.WriteLine("You are in the " & currentRoom.Name)
+			Console.WriteLine(currentRoom.Description)
+			Console.WriteLine()
 
-        'Console.WriteLine("Bye for now!")
+			'player choice
 
-        Dim strMasterRoom(3, 9) As String
+			Console.WriteLine("what do you want to do: 0-move 1-inventory 2-explore")
+			input = Console.ReadLine
 
-        strMasterRoom(0, 0) = "The Study"                                'Room Name
-        strMasterRoom(0, 1) = "This is where procrastinating is done."   'Room Description Text
-        strMasterRoom(0, 2) = 0                                          'Lock Status. 0 = Unlocked. 1 = Locked
-        strMasterRoom(0, 3) = "You explore and find nothing of use"      'Explore Room Text
-        strMasterRoom(0, 4) = 2                                          'Indicates # of exits
-        strMasterRoom(0, 5) = 1                                          'Indicates Index of One Exit in Array - in this case the library
-        strMasterRoom(0, 6) = 2                                          'Indicates Index of One Exit in Array - in this case the billiards room
+			If input = 0 Then
 
-        strMasterRoom(1, 0) = "The Library"                         'Room Name
-        strMasterRoom(1, 1) = "Where wild books make their nest."   'Room Description Text
-        strMasterRoom(1, 2) = 0                                     'Lock Status. 0 = Unlocked. 1 = Locked
-        strMasterRoom(1, 3) = "You discovered the Wrench"           'Explore Room Text
-        strMasterRoom(1, 4) = 2                                     'Indicates # of exits
-        strMasterRoom(1, 5) = 0                                     'Indicates Index of One Exit in Array - in this case the study
-        strMasterRoom(1, 6) = 2                                     'Indicates Index of One Exit in Array - in this case the billiards room
+				'this block will customize the room options. the user will always type sequentially starting from 0. the text will be as long as it needs to be for all options to appear
+				strRoomMotion = "would you like to go to the " & rooms(currentRoom.Exits(0)).Name & "(Option 0)"
+				For inti = 1 To (currentRoom.Exits.Count - 1)
+					strRoomMotion = strRoomMotion & " or the " & rooms(currentRoom.Exits(inti)).Name & "(Option " & inti & ")"
+				Next
 
-        strMasterRoom(2, 0) = "The Billiards Room"                           'Room Name
-        strMasterRoom(2, 1) = "This has a pool table, not to be confused with a table inside of a pool."       'Room Description Text
-        strMasterRoom(2, 2) = 0                                     'Lock Status. 0 = Unlocked. 1 = Locked
-        strMasterRoom(2, 3) = "You explore and find a secret exit"  'Explore Room Text
-        strMasterRoom(2, 4) = 3                                     'Indicates # of exits
-        strMasterRoom(2, 5) = 0                                     'Indicates Index of One Exit in Array - in this case the study
-        strMasterRoom(2, 6) = 1                                     'Indicates Index of One Exit in Array - in this case the library
-        strMasterRoom(2, 7) = 3                                     'Indicates Index of One Exit in Array - in this case the ballroom
+				'outputs the text of the room options
+				Console.WriteLine(strRoomMotion)
 
-        strMasterRoom(3, 0) = "The Ballroom"                        'Room Name
-        strMasterRoom(3, 1) = "Sadly, not a ballpit."               'Room Description Text
-        strMasterRoom(3, 2) = 0                                     'Lock Status. 0 = Unlocked. 1 = Locked
-        strMasterRoom(3, 3) = "You reached the exit"                'Explore Room Text
-        strMasterRoom(3, 4) = 2                                     'Indicates # of exits
-        strMasterRoom(3, 5) = 0                                     'Indicates Index of One Exit in Array
-        strMasterRoom(3, 6) = 2                                     'Indicates Index of One Exit in Array
+				'reads response and moves to correct room
+				'in future consider better error trapping if there are secret rooms, locked rooms, and rooms with more exit possibilities
+				nextRoom = Console.ReadLine
+				If nextRoom = 0 Then
+					currentRoom = rooms(currentRoom.Exits(nextRoom))
+				ElseIf nextRoom = 1 Then
+					currentRoom = rooms(currentRoom.Exits(nextRoom))
+				ElseIf currentRoom.Exits.Length = 3 And nextRoom = 2 Then
+					currentRoom = rooms(currentRoom.Exits(nextRoom))
+				Else
 
-        Dim strRoomMotion As String
-        Dim nextRoom As Integer
+					Console.WriteLine("Invalid Input")
+				End If
 
-        currentRoom = 0
-        Do While currentRoom >= 0
+			ElseIf input = 1 Then
+				'inventory
+			Else
+				'explore
+				Console.WriteLine(currentRoom.ExploreText)
 
-            'introductions to the room
+				'in future consider how this step changes other parts. does this add something to your inventory? open up another room option and if so how does it get added to list
 
-            Console.WriteLine("You are in the " & strMasterRoom(currentRoom, 0))
-            Console.WriteLine(strMasterRoom(currentRoom, 1))
-            Console.WriteLine()
+			End If
 
-            'player choice
+		Loop
 
-            Console.WriteLine("what do you want to do: 0-move 1-inventory 2-explore")
-            input = Console.ReadLine
+		Console.WriteLine("Bye for now!")
+		Console.ReadKey()
 
-            If input = 0 Then
-
-                'this block will customize the room options. the user will always type sequentially starting from 0. the text will be as long as it needs to be for all options to appear
-                strRoomMotion = "would you like to go to the " & strMasterRoom(strMasterRoom(currentRoom, 5), 0) & "(Option 0)"
-                For inti = 1 To (strMasterRoom(currentRoom, 4) - 1)
-                    strRoomMotion = strRoomMotion & " or the " & strMasterRoom(strMasterRoom(currentRoom, inti + 5), 0) & "(Option " & inti & ")"
-                Next
-
-                'outputs the text of the room options
-                Console.WriteLine(strRoomMotion)
-
-                'reads response and moves to correct room
-                'in future consider better error trapping if there are secret rooms, locked rooms, and rooms with more exit possibilities
-                nextRoom = Console.ReadLine
-                If nextRoom = 0 Then
-                    currentRoom = strMasterRoom(currentRoom, 5)
-                ElseIf nextRoom = 1 Then
-                    currentRoom = strMasterRoom(currentRoom, 6)
-                ElseIf currentRoom = 2 Then
-                    currentRoom = strMasterRoom(currentRoom, 7)
-                Else
-
-                    Console.WriteLine("Invalid Input")
-                End If
-
-            ElseIf input = 1 Then
-                'inventory
-            Else
-                'explore
-                Console.WriteLine(strMasterRoom(currentRoom, 3))
-
-                'in future consider how this step changes other parts. does this add something to your inventory? open up another room option and if so how does it get added to list
-
-            End If
-
-        Loop
-
-        Console.WriteLine("Bye for now!")
-        Console.ReadKey()
-
-    End Sub
+	End Sub
 
 
 End Module
