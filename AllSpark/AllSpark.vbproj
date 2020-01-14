@@ -70,7 +70,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Doorway.vb" />
+    <Compile Include="Actions\Action.vb" />
+    <Compile Include="Actions\ExploreAction.vb" />
     <Compile Include="Inventory.vb" />
+    <Compile Include="Actions\InventoryAction.vb" />
+    <Compile Include="Actions\MoveAction.vb" />
     <Compile Include="Room.vb" />
     <Compile Include="Module1.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

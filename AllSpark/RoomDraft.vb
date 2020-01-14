@@ -14,8 +14,8 @@
 
 
 
-    '    Sub DisplayDescription()
-    '        Console.WriteLine(RoomText)
+	'    Sub DisplayDescription()
+	'        Console.WriteLine(RoomText)
 
-    '   End Sub
+	'   End Sub
 End Class
