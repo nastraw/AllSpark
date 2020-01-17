@@ -29,10 +29,10 @@
 			Console.ForegroundColor = ConsoleColor.White
 
 			Dim actionOptions = "What do you want to do: "
-			For inti = 0 To (actions.Count - 1)
-				actionOptions = actionOptions & " " & actions(inti).PrintActionOption(inti)
+			For inti = 1 To (actions.Count)
+				actionOptions = actionOptions & " " & actions(inti - 1).PrintActionOption(inti)
 			Next
-			Console.WriteLine("What do you want to do: 1-move 2-inventory 3-explore")
+			Console.WriteLine(actionOptions)
 			input = Val(Console.ReadLine)
 			If input > 0 And input <= actions.Length Then
 				actions(input - 1).DoAction(currentRoom, inventory, doorways)
@@ -54,6 +54,20 @@
 		actions(2) = New ExploreAction()
 
 		'could remove "you explore and find parameter" but I suspect we'll want it for events later on. 
+
+		inventory(0) = New Inventory(False, "The Lead Pipe", "A blunt weapon", 1, False)
+		inventory(1) = New Inventory(False, "The Wrench", "Handy for plumbing", 1, False)
+		inventory(2) = New Inventory(False, "The Candlestick", "Good for mood lighting", 1, False)
+		inventory(3) = New Inventory(False, "The Revolver", "Remember, guns don't kill people. People kill guns", 1, False)
+		inventory(4) = New Inventory(False, "The Rope", "Could always use rope", 1, False)
+		inventory(5) = New Inventory(False, "The Knife", "Stabby Stab", 1, False)
+		inventory(6) = New Inventory(False, "The Bronze Key", "ooooooo shiny", 1, True)
+		inventory(7) = New Inventory(False, "The Silver Key", "Silver! Your favorite color", 1, True)
+		inventory(8) = New Inventory(False, "The Gold Key", "My precious...my precious....", 1, True)
+
+		Dim itemRoomNum(4) As Integer
+
+
 
 		rooms(0) = New Room("The Lounge", "No time for lounging - we've got a mystery afoot!", "You explore and find ", "The Candlestick")
 		rooms(1) = New Room("The Dining Room", "How elegant.", "You explore and find  ", "The Bronze Key")
@@ -127,15 +141,24 @@
 
 		currentRoom = rooms(0)
 
-		inventory(0) = New Inventory(False, "The Lead Pipe", "A blunt weapon", 1)
-		inventory(1) = New Inventory(False, "The Wrench", "Handy for plumbing", 1)
-		inventory(2) = New Inventory(False, "The Candlestick", "Good for mood lighting", 1)
-		inventory(3) = New Inventory(False, "The Revolver", "Remember, guns don't kill people. People kill guns", 1)
-		inventory(4) = New Inventory(False, "The Rope", "Could always use rope", 1)
-		inventory(5) = New Inventory(False, "The Knife", "Stabby Stab", 1)
-		inventory(6) = New Inventory(False, "The Bronze Key", "ooooooo shiny", 1)
-		inventory(7) = New Inventory(False, "The Silver Key", "Silver! Your favorite color", 1)
-		inventory(8) = New Inventory(False, "The Gold Key", "My precious...my precious....", 1)
+		itemRoomNum(0) = 0
+		itemRoomNum(1) = 5
+		itemRoomNum(2) = 8
+		itemRoomNum(3) = 9
+		itemRoomNum(4) = 10
+
+		inventory(0).getItemName()
+		Randomize()
+
+		For intA = 0 To 4
+			Dim randomItemToPlace = CInt(5 * Rnd())
+			While inventory(randomItemToPlace Mod 5).ItemPlaced
+				randomItemToPlace += 1
+			End While
+			rooms(itemRoomNum(intA)).hiddenitem = inventory(randomItemToPlace Mod 5).ItemName
+			inventory(randomItemToPlace Mod 5).ItemPlaced = True
+		Next
+
 	End Sub
 
 	Public Sub Movement()

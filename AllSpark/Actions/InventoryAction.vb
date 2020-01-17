@@ -10,7 +10,8 @@ Public Class InventoryAction
 
 	Public Overrides Sub DoAction(ByRef currentRoom As Room, inventoryList() As Inventory, doorwayList() As Doorway)
 		strItemList = "You currently possess: "
-		For inti = 0 To 2
+		For inti = 0 To inventoryList.Length - 1
+
 			Dim currentItem = inventoryList(inti)
 			If currentItem.Acquired = True Then
 				strItemList = strItemList & currentItem.ItemName & ", "
