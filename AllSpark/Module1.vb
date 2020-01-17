@@ -139,6 +139,9 @@
 		rooms(10).Doorways(0) = doorways(9)
 		rooms(10).Doorways(1) = doorways(10)
 
+		ReDim rooms(11).Doorways(0)
+		rooms(11).Doorways(0) = doorways(10)
+
 		currentRoom = rooms(0)
 
 		itemRoomNum(0) = 0
@@ -158,90 +161,6 @@
 			rooms(itemRoomNum(intA)).hiddenitem = inventory(randomItemToPlace Mod 5).ItemName
 			inventory(randomItemToPlace Mod 5).ItemPlaced = True
 		Next
-
-	End Sub
-
-	Public Sub Movement()
-		strRoomMotion = "Move: Would you like to go to " & currentRoom.Doorways(0).strGetOtherRoomName(currentRoom) & "(Option 1)"
-		For inti = 1 To (currentRoom.Doorways.Count - 1)
-			strRoomMotion = strRoomMotion & " or " & currentRoom.Doorways(inti).strGetOtherRoomName(currentRoom) & "(Option " & (inti + 1) & ")"
-		Next
-
-		Console.WriteLine(strRoomMotion)
-		nextRoom = Val(Console.ReadLine)
-
-		If nextRoom = 0 Or (currentRoom.Doorways.Length < nextRoom) Then
-			Console.WriteLine("Invalid")
-		ElseIf currentRoom.Doorways(nextRoom - 1).Locked Then
-			Console.WriteLine(currentRoom.Doorways(nextRoom - 1).LockedDescription)
-			For intj = 0 To INVENTORYMAX
-				currentItem = inventory(intj)
-				If currentRoom.Doorways(nextRoom - 1).UnlockCondition = currentItem.ItemName And currentItem.Acquired = True Then
-					Console.WriteLine("You use your " & currentItem.ItemName & " to open the door")
-					currentRoom = currentRoom.Doorways(nextRoom - 1).roomGetOtherRoom(currentRoom)
-					intj = INVENTORYMAX
-				End If
-			Next
-		Else
-			If nextRoom >= 1 And nextRoom <= doorways.Length Then
-				currentRoom = currentRoom.Doorways(nextRoom - 1).roomGetOtherRoom(currentRoom)
-			Else
-				Console.WriteLine("Invalid Input")
-			End If
-			Console.WriteLine()
-		End If
-	End Sub
-
-	Public Sub Backpack()
-		strItemList = "You currently possess: "
-		For inti = 0 To 2
-			currentItem = inventory(inti)
-			If currentItem.Acquired = True Then
-				strItemList = strItemList & currentItem.ItemName & ", "
-			End If
-		Next
-		If strItemList = "You currently possess: " Then
-			Console.WriteLine("You currently possess no items.")
-		Else
-			Console.WriteLine(Left(strItemList, (Len(strItemList) - 2)))
-		End If
-	End Sub
-
-	Public Sub Exploration()
-		If currentRoom.hiddenitem <> "None" Then
-			Console.WriteLine(currentRoom.ExploreText & currentRoom.hiddenitem)
-			If currentRoom.hiddenitem = "a secret passage" Then
-				If currentRoom.Name = "The Kitchen" Then
-					Console.WriteLine("This passage leads to the Study")
-					ReDim rooms(2).Doorways(2)
-					rooms(2).Doorways(0) = doorways(1)
-					rooms(2).Doorways(1) = doorways(2)
-					rooms(2).Doorways(2) = doorways(12)
-				ElseIf currentRoom.Name = "The Conservatory" Then
-					Console.WriteLine("This passage leads to the Lounge")
-					ReDim rooms(4).Doorways(2)
-					rooms(4).Doorways(0) = doorways(3)
-					rooms(4).Doorways(1) = doorways(4)
-					rooms(4).Doorways(2) = doorways(11)
-				End If
-			Else
-				For intj = 0 To INVENTORYMAX
-					currentItem = inventory(intj)
-					If currentRoom.hiddenitem = currentItem.ItemName Then
-						currentItem.Acquired = True
-						Console.WriteLine(currentItem.ItemDescription)
-						currentRoom.ExploreText = ""
-						currentRoom.hiddenitem = "None"
-					End If
-				Next
-			End If
-		Else
-			Console.WriteLine("There is nothing to be found")
-		End If
-
-		If currentRoom.hiddenitem = "the CONFESSION! Gasp. Colonel Mustard, Study and Lead Pipe all along, the jerk." Then
-			currentRoom = Nothing
-		End If
 
 	End Sub
 
