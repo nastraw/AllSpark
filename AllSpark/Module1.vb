@@ -9,8 +9,13 @@
 	Dim INVENTORYMAX As Integer = 8
 	Dim inventory(INVENTORYMAX) As Inventory
 	Dim currentItem As Inventory
-	Dim strItemList As String
-	Sub Main()
+    Dim strItemList As String
+    Dim strCharacters(5) As Characters
+    Dim strCulprit As String
+    Dim intRand As Integer
+    Dim strMurderWeapon As String
+
+    Sub Main()
 
 		Creation()
 		Do While currentRoom IsNot Nothing
@@ -49,7 +54,14 @@
 
 	Public Sub Creation()
 
-		actions(0) = New MoveAction()
+        strCharacters(0) = New Characters("Colonel Mustard", False)
+        strCharacters(1) = New Characters("Miss Peacock", False)
+        strCharacters(2) = New Characters("Reverend Green", False)
+        strCharacters(3) = New Characters("Miss Scarlet", False)
+        strCharacters(4) = New Characters("Professor Plum", False)
+        strCharacters(5) = New Characters("Mrs. White", False)
+
+        actions(0) = New MoveAction()
 		actions(1) = New InventoryAction()
 		actions(2) = New ExploreAction()
 
@@ -65,12 +77,19 @@
 		inventory(7) = New Inventory(False, "The Silver Key", "Silver! Your favorite color", 1, True)
 		inventory(8) = New Inventory(False, "The Gold Key", "My precious...my precious....", 1, True)
 
-		Dim itemRoomNum(4) As Integer
+        Dim itemRoomNum(4) As Integer
 
+        Randomize()
+        intRand = CInt(5 * Rnd())
+        strCulprit = strCharacters(intRand).charName
+        strCharacters(intRand).charPlaced = True
+        Randomize()
+        intRand = CInt(5 * Rnd())
+        strMurderWeapon = inventory(intRand).ItemName
+        inventory(intRand).ItemPlaced = True
 
-
-		rooms(0) = New Room("The Lounge", "No time for lounging - we've got a mystery afoot!", "You explore and find ", "The Candlestick")
-		rooms(1) = New Room("The Dining Room", "How elegant.", "You explore and find  ", "The Bronze Key")
+        rooms(0) = New Room("The Lounge", "No time for lounging - we've got a mystery afoot!", "You explore and find ", "The Candlestick")
+        rooms(1) = New Room("The Dining Room", "How elegant.", "You explore and find  ", "The Bronze Key")
 		rooms(2) = New Room("The Kitchen", "Help yourself to the fridge", "You explore and find ", "a secret passage")
 		rooms(3) = New Room("The Ballroom", "Sadly, not a ballpit.", "You explore and find ", "The Silver Key")
 		rooms(4) = New Room("The Conservatory", "Conserve your strength", "You explore and find", "a secret passage")
@@ -80,9 +99,9 @@
 		rooms(8) = New Room("The Hall", "Don't get stuffed in a locker", "You explore and find", "The Revolver")
 		rooms(9) = New Room("The Stairs", "Up and up and up they go...", "You explore and find", "The Rope")
 		rooms(10) = New Room("The Bedroom", "This feels like an invasion of your host's privacy", "You explore and find  ", "The Knife")
-		rooms(11) = New Room("The Vault", "A secret vault. How mysterious.", "You explore and find ", "the CONFESSION! Gasp. Colonel Mustard, Study and Lead Pipe all along, the jerk.")
+        rooms(11) = New Room("The Vault", "A secret vault. How mysterious.", "You explore and find ", "the CONFESSION! Gasp. " & strCulprit & ", Study and " & strMurderWeapon & " all along, the jerk.")
 
-		doorways(0) = New Doorway(rooms(0), rooms(1), "A Door", Nothing, Nothing, False)
+        doorways(0) = New Doorway(rooms(0), rooms(1), "A Door", Nothing, Nothing, False)
 		doorways(1) = New Doorway(rooms(1), rooms(2), "A Door", Nothing, Nothing, False)
 		doorways(2) = New Doorway(rooms(2), rooms(3), "A Door", Nothing, Nothing, False)
 		doorways(3) = New Doorway(rooms(3), rooms(4), "A Door", Nothing, Nothing, False)
@@ -151,18 +170,20 @@
 		itemRoomNum(4) = 10
 
 		inventory(0).getItemName()
-		Randomize()
+        Randomize()
 
-		For intA = 0 To 4
-			Dim randomItemToPlace = CInt(5 * Rnd())
-			While inventory(randomItemToPlace Mod 5).ItemPlaced
-				randomItemToPlace += 1
-			End While
-			rooms(itemRoomNum(intA)).hiddenitem = inventory(randomItemToPlace Mod 5).ItemName
-			inventory(randomItemToPlace Mod 5).ItemPlaced = True
-		Next
+        For intA = 0 To 4
+            Dim randomItemToPlace = CInt(5 * Rnd())
 
-	End Sub
+            While inventory(randomItemToPlace Mod 6).ItemPlaced
+                randomItemToPlace += 1
+            End While
+
+            rooms(itemRoomNum(intA)).hiddenitem = inventory(randomItemToPlace Mod 6).ItemName
+            inventory(randomItemToPlace Mod 6).ItemPlaced = True
+        Next
+
+    End Sub
 
 	Public Sub QuitGame()
 		Console.WriteLine("Quitter!")

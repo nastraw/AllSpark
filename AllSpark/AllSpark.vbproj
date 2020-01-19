@@ -69,6 +69,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Characters.vb" />
     <Compile Include="Doorway.vb" />
     <Compile Include="Actions\Action.vb" />
     <Compile Include="Actions\ExploreAction.vb" />
