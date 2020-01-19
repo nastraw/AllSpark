@@ -2,9 +2,9 @@
 
 	Public Name As String
 
-	Public MustOverride Sub DoAction(ByRef currentRoom As Room, inventoryList() As Inventory, doorwayList() As Doorway)
+    Public MustOverride Sub DoAction(ByRef currentRoom As Room, inventoryList() As Inventory, doorwayList() As Doorway, encounterlist() As Encounters)
 
-	Public Function PrintActionOption(actionIndex As Integer) As String
+    Public Function PrintActionOption(actionIndex As Integer) As String
 		Return $"{actionIndex}-{Name}"
 	End Function
 End Class

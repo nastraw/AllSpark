@@ -6,12 +6,13 @@ Public Class MoveAction
 	Private strRoomMotion As String
 	Private nextRoom As Integer
 	Private currentItem As Inventory
+    Private encountercount As Integer
 
-	Public Sub New()
+    Public Sub New()
 		Name = "move"
 	End Sub
 
-    Public Overrides Sub DoAction(ByRef currentRoom As Room, inventoryList() As Inventory, doorwayList() As Doorway)
+    Public Overrides Sub DoAction(ByRef currentRoom As Room, inventoryList() As Inventory, doorwayList() As Doorway, encounterlist() As Encounters)
         Dim inventoryCount = inventoryList.Length - 1
         strRoomMotion = "Move: Would you like to go to " & currentRoom.Doorways(0).strGetOtherRoomName(currentRoom) & "(Option 1)"
         For inti = 1 To (currentRoom.Doorways.Count - 1)
@@ -31,11 +32,13 @@ Public Class MoveAction
                     Console.WriteLine("You use your " & currentItem.ItemName & " to open the door")
                     currentRoom = currentRoom.Doorways(nextRoom - 1).roomGetOtherRoom(currentRoom)
                     intj = inventoryCount
+                    Encounters(encounterlist)
                 End If
             Next
         Else
             If nextRoom >= 1 And nextRoom < doorwayList.Length Then
                 currentRoom = currentRoom.Doorways(nextRoom - 1).roomGetOtherRoom(currentRoom)
+                Encounters(encounterlist)
             Else
                 Console.WriteLine("Invalid Input")
             End If
@@ -43,10 +46,19 @@ Public Class MoveAction
         End If
     End Sub
 
-    Public Sub Encounters()
-
-
-
+    Public Sub Encounters(encounterlist() As Encounters)
+        Randomize()
+        If encountercount < 6 And (CInt(4 * Rnd())) = 1 Then
+            Dim intk = CInt(5 * Rnd())
+            While encounterlist(intk Mod 6).encounterHappened = True
+                intk += 1
+            End While
+            Console.ForegroundColor = ConsoleColor.Yellow
+            Console.WriteLine(encounterlist(intk Mod 6).encounterDescription)
+            Console.ForegroundColor = ConsoleColor.White
+            encounterlist(intk Mod 6).encounterHappened = True
+            encountercount += 1
+        End If
     End Sub
 
 End Class

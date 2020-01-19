@@ -14,6 +14,7 @@
     Dim strCulprit As String
     Dim intRand As Integer
     Dim strMurderWeapon As String
+    Dim encounterlist(5) As Encounters
 
     Sub Main()
 
@@ -40,8 +41,8 @@
 			Console.WriteLine(actionOptions)
 			input = Val(Console.ReadLine)
 			If input > 0 And input <= actions.Length Then
-				actions(input - 1).DoAction(currentRoom, inventory, doorways)
-			ElseIf input = 99 Then
+                actions(input - 1).DoAction(currentRoom, inventory, doorways, encounterlist)
+            ElseIf input = 99 Then
 				QuitGame()
 			Else
 				Console.WriteLine("Invalid")
@@ -60,6 +61,13 @@
         strCharacters(3) = New Characters("Miss Scarlet", False)
         strCharacters(4) = New Characters("Professor Plum", False)
         strCharacters(5) = New Characters("Mrs. White", False)
+
+        encounterlist(0) = New Encounters("A rat runs past you", False)
+        encounterlist(1) = New Encounters("You find Mr. Boddy's dead body", False)
+        encounterlist(2) = New Encounters("You fight through cobwebs to enter", False)
+        encounterlist(3) = New Encounters("You hear footsteps on the other side of the wall", False)
+        encounterlist(4) = New Encounters("You see fingerprints and footprints and a royal prince", False)
+        encounterlist(5) = New Encounters("The lights begin to flicker", False)
 
         actions(0) = New MoveAction()
 		actions(1) = New InventoryAction()
@@ -192,3 +200,5 @@
 		currentRoom = Nothing
 	End Sub
 End Module
+
+
